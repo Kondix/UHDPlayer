@@ -12,3 +12,9 @@ How to convert video to raw sequence:
 #####################################
 
 ffmpeg -i INPUT -f rawvideo -vcodec rawvideo OUTPUT
+
+###############################
+How to play raw video sequence:
+###############################
+
+ffplay -f rawvideo -s 1920x1080 INPUT
