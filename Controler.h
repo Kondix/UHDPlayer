@@ -2,6 +2,7 @@
 #include <vlc/vlc.h>
 #include <string>
 #include <iostream>
+#include <vector>
 #include "DisplayHandler.h"
 
 
@@ -21,6 +22,15 @@ public:
         m_pMedia = libvlc_media_new_path(m_VLCInstance, sFileLocation.c_str());
         m_DisplayHandler = new DisplayHandler(m_VLCInstance, m_pMedia);
     };
+
+    Controler(std::string sFileLocation, std::vector<const char*> vcOptions)
+    {
+        m_VLCInstance = libvlc_new(int(vcOptions.size()), vcOptions.data());
+        m_pMedia = libvlc_media_new_location (m_VLCInstance, "imem://");
+        m_DisplayHandler = new DisplayHandler(m_VLCInstance, m_pMedia);
+    };
+
+
 
     virtual ~Controler()
     {
