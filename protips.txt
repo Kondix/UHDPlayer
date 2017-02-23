@@ -1,0 +1,14 @@
+######################
+How to install FFmpeg:
+######################
+
+sudo add-apt-repository ppa:mc3man/trusty-media
+sudo apt-get update
+sudo apt-get install ffmpeg
+sudo apt-get install frei0r-plugins
+
+#####################################
+How to convert video to raw sequence:
+#####################################
+
+ffmpeg -i INPUT -f rawvideo -vcodec rawvideo OUTPUT
