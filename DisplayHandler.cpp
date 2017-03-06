@@ -29,7 +29,7 @@ void DisplayHandler::Play()
 
     while (!m_bDone)
     {
-        sleep(1);
+        sleep(10);
     }
     ReleaseMedia();
 }
