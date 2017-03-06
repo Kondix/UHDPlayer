@@ -8,9 +8,9 @@
 const int iFrameW = 1920;
 const int iFrameH = 1080;
 const int iFrameDepth = 32;
-const int iBitByte = 8;
+const int iBitByte = 12;
 
-std::string sFileLocation = "/home/kjagielski/CLionProjects/UHDPlayer/sampleVideos/tractor.raw";
+std::string sFileLocation = "/home/barti/CLionProjects/UHDPlayer/sampleVideos/tractorraw";
 bool DisplayHandler::m_bDone = false;
 
 class MyImemData
@@ -32,6 +32,7 @@ int MyImemGetCallback (void *data, const char *cookie, int64_t *dts, int64_t *pt
     *bufferSize = iFrameH*iFrameW*iFrameDepth/iBitByte;
     *buffer = imem->mFrame;
     *dts = *pts = imem->mDts = imem->mPts = imem->mPts + uS;
+
 }
 
 int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, void * buffer)
@@ -70,10 +71,11 @@ int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, vo
         options.push_back(imemReleaseArg);
 
         options.push_back("--imem-cookie=\"IMEM\"");
-        options.push_back("--imem-codec=I420");
+        options.push_back("--imem-codec=RV24");
+        options.push_back("--imem-cookie=test");
         // Video data.
         options.push_back("--imem-cat=2");
-
+        options.push_back("--imem-fps=30");
         char imemWidthArg[256];
         sprintf(imemWidthArg, "--imem-width=%d", iFrameW);
         options.push_back(imemWidthArg);
@@ -86,9 +88,10 @@ int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, vo
         sprintf(imemChannelsArg, "--imem-channels=%d", iFrameDepth);
         options.push_back(imemChannelsArg);
 
-        options.push_back("-v");
+        options.push_back("--verbose=2");
 
         Controler ctrl(sFileLocation, options);
         ctrl.Run();
+
         return 0;
     }

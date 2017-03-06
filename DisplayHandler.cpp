@@ -29,9 +29,15 @@ void DisplayHandler::Play()
 
     while (!m_bDone)
     {
-        sleep(10);
+        sleep(60);
     }
-    ReleaseMedia();
+
+//    if(m_bDone) {
+//        libvlc_media_player_stop(m_pMediaPlayer);
+//        libvlc_media_player_release(m_pMediaPlayer);
+//        libvlc_release(m_libvlc_instance);
+//    }
+    //ReleaseMedia();
 }
 
 void DisplayHandler::ReleaseMedia()

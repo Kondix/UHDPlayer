@@ -34,6 +34,7 @@ public:
 
     virtual ~Controler()
     {
+        libvlc_release(m_VLCInstance);
         delete m_DisplayHandler;
     };
 
