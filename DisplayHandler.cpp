@@ -1,4 +1,5 @@
 #include "DisplayHandler.h"
+#include "Types.h"
 
 void DisplayHandler::AddMedia()
 {
@@ -23,21 +24,19 @@ void DisplayHandler::HandleEvent(const libvlc_event_t* pEvt, void*)
     }
 }
 
-void DisplayHandler::Play()
+void DisplayHandler::Play(FramesHandler& framesHandler, RawDataHandler& rdh, char* cBuffer)
 {
     libvlc_media_player_play(m_pMediaPlayer);
 
     while (!m_bDone)
     {
-        sleep(60);
+        //sleep(1);
+        framesHandler.ClearFrames();
+        rdh.GetFrame(iMovieByteSize, cBuffer);
+        framesHandler.AddFrame(cBuffer);
     }
-
-//    if(m_bDone) {
-//        libvlc_media_player_stop(m_pMediaPlayer);
-//        libvlc_media_player_release(m_pMediaPlayer);
-//        libvlc_release(m_libvlc_instance);
-//    }
-    //ReleaseMedia();
+    
+    ReleaseMedia();
 }
 
 void DisplayHandler::ReleaseMedia()

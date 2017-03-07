@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include "DisplayHandler.h"
+#include "Types.h"
+#include "RawDataHandler.h"
 
 
 #ifndef UHDPLAYER_CONTROLER_H
@@ -36,7 +38,7 @@ public:
     };
 
 public:
-    void Run();
+    void Run(FramesHandler& framesHandler, RawDataHandler& rdh, char* cBuffer);
 };
 
 

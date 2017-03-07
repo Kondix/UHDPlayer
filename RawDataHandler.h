@@ -19,7 +19,6 @@ public:
         delete m_pFileOpener;
     }
 
-    std::vector<char> GetFrame(int iFrameSize);
     void GetFrame(int iFrameSize, char* cBuffer);
 };
 

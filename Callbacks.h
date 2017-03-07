@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "Types.h"
 
+int g_Cnt = 0;
 
 namespace Callbacks
 {
@@ -13,12 +14,14 @@ namespace Callbacks
         FramesHandler* framesHandler = (FramesHandler*)data;
 
         *bufferSize = iFrameH*iFrameW*iFrameDepth/iBitByte;
-        *buffer = framesHandler->GetFrame(0);
-
-        int64_t iSetUp = framesHandler->GetPts() + iFPS;
-        framesHandler->SetDts(iSetUp);
-        framesHandler->SetPts(iSetUp);
-        *dts = *pts = iSetUp;
+        if (framesHandler->GetFramesCount() > 0)
+        {
+            *buffer = framesHandler->GetFrame(0);
+            int64_t iSetUp = framesHandler->GetPts() + iFPS;
+            framesHandler->SetDts(iSetUp);
+            framesHandler->SetPts(iSetUp);
+            *dts = *pts = iSetUp;
+        }
 
         return 0;
     }

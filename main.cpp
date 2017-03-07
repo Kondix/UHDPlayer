@@ -48,7 +48,7 @@ bool DisplayHandler::m_bDone = false;
         optionsHandler.AddOption(imemChannelsArg);
 
         Controler ctrl(sFileLocation, optionsHandler.GetOptions());
-        ctrl.Run();
+        ctrl.Run(framesHandler, rdh, cStr);
 
         return 0;
     }
