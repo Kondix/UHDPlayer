@@ -8,7 +8,7 @@
 const int iFrameW = 1920;
 const int iFrameH = 1080;
 const int iFrameDepth = 32;
-const int iBitByte = 12;
+const int iBitByte = 8;
 
 std::string sFileLocation = "/home/barti/CLionProjects/UHDPlayer/sampleVideos/tractorraw";
 bool DisplayHandler::m_bDone = false;
@@ -27,12 +27,21 @@ int MyImemGetCallback (void *data, const char *cookie, int64_t *dts, int64_t *pt
 {
     MyImemData* imem = (MyImemData*)data;
 
+    if(imem == NULL)
+        return 1;
+    // Loop...
+//    if(imem->mFrame >= iFrameH*iFrameW*iFrameDepth)
+//    {
+//        imem->mFrame = 0;
+//    }
+
     int64_t uS = 33333; // 60 fps
 
     *bufferSize = iFrameH*iFrameW*iFrameDepth/iBitByte;
     *buffer = imem->mFrame;
     *dts = *pts = imem->mDts = imem->mPts = imem->mPts + uS;
 
+    return 0;
 }
 
 int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, void * buffer)
@@ -73,6 +82,8 @@ int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, vo
         options.push_back("--imem-cookie=\"IMEM\"");
         options.push_back("--imem-codec=RV24");
         options.push_back("--imem-cookie=test");
+        //options.push_back("--imem-caching=3000");
+
         // Video data.
         options.push_back("--imem-cat=2");
         options.push_back("--imem-fps=30");
