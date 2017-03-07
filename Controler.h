@@ -9,7 +9,6 @@
 #ifndef UHDPLAYER_CONTROLER_H
 #define UHDPLAYER_CONTROLER_H
 
-
 class Controler {
 private:
     libvlc_instance_t* m_VLCInstance;
@@ -29,8 +28,6 @@ public:
         m_pMedia = libvlc_media_new_location (m_VLCInstance, "imem://");
         m_DisplayHandler = new DisplayHandler(m_VLCInstance, m_pMedia);
     };
-
-
 
     virtual ~Controler()
     {

@@ -1,42 +1,10 @@
+#include "Callbacks.h"
 #include "Controler.h"
-#include "FileOpener.h"
+#include "ImemOptionsHandler.h"
 #include "RawDataHandler.h"
 
-const int iFrameW = 1920;
-const int iFrameH = 1080;
-const int iFrameDepth = 32;
-const int iBitByte = 8;
-
-std::string sFileLocation = "/home/kjagielski/CLionProjects/UHDPlayer/sampleVideos/tractor.raw";
 bool DisplayHandler::m_bDone = false;
 
-class MyImemData
-{
-public:
-    MyImemData() : mFrame(0), mDts(0), mPts(0) {}
-    ~MyImemData() {}
-    char* mFrame;
-    int64_t mDts;
-    int64_t mPts;
-};
-
-int MyImemGetCallback (void *data, const char *cookie, int64_t *dts, int64_t *pts, unsigned *flags, size_t * bufferSize, void ** buffer)
-{
-    MyImemData* imem = (MyImemData*)data;
-
-    int64_t uS = 33333; // 60 fps
-
-    *bufferSize = iFrameH*iFrameW*iFrameDepth/iBitByte;
-    *buffer = imem->mFrame;
-    *dts = *pts = imem->mDts = imem->mPts = imem->mPts + uS;
-
-    return 0;
-}
-
-int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, void * buffer)
-{
-    return 0;
-}
     int main()
     {
         RawDataHandler rdh(sFileLocation);
@@ -45,52 +13,41 @@ int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, vo
         char cStr[iSize];
         rdh.GetFrame(iSize, cStr);
 
-        std::ofstream RawImageFile;
-        RawImageFile.open ("RawImageFile.txt");
-        RawImageFile << cStr;
-        RawImageFile.close();
+        FramesHandler framesHandler;
+        framesHandler.AddFrame(cStr);
 
-        MyImemData myImemData;
-        myImemData.mFrame = cStr;
-
-        std::vector<const char*> options;
-        options.push_back("--no-video-title-show");
+        ImemOptionsHandler optionsHandler;
+        optionsHandler.AddOption("--no-video-title-show");
+        optionsHandler.AddOption("--imem-codec=I420");
+        optionsHandler.AddOption("--imem-cookie=test");
+        optionsHandler.AddOption("--imem-cat=2");
+        optionsHandler.AddOption("--verbose=2");
 
         char imemDataArg[256];
-        sprintf(imemDataArg, "--imem-data=%p", &myImemData);
-        options.push_back(imemDataArg);
+        sprintf(imemDataArg, "--imem-data=%p", &framesHandler);
+        optionsHandler.AddOption(imemDataArg);
 
         char imemGetArg[256];
-        sprintf(imemGetArg, "--imem-get=%#p", MyImemGetCallback);
-        options.push_back(imemGetArg);
+        sprintf(imemGetArg, "--imem-get=%#p", Callbacks::MyImemGetCallback);
+        optionsHandler.AddOption(imemGetArg);
 
         char imemReleaseArg[256];
-        sprintf(imemReleaseArg, "--imem-release=%#p", MyImemReleaseCallback);
-        options.push_back(imemReleaseArg);
+        sprintf(imemReleaseArg, "--imem-release=%#p", Callbacks::MyImemReleaseCallback);
+        optionsHandler.AddOption(imemReleaseArg);
 
-        options.push_back("--imem-cookie=\"IMEM\"");
-        options.push_back("--imem-codec=I420");
-        options.push_back("--imem-cookie=test");
-        //options.push_back("--imem-caching=3000");
-
-        // Video data.
-        options.push_back("--imem-cat=2");
-        options.push_back("--imem-fps=30");
         char imemWidthArg[256];
         sprintf(imemWidthArg, "--imem-width=%d", iFrameW);
-        options.push_back(imemWidthArg);
+        optionsHandler.AddOption(imemWidthArg);
 
         char imemHeightArg[256];
         sprintf(imemHeightArg, "--imem-height=%d", iFrameH);
-        options.push_back(imemHeightArg);
+        optionsHandler.AddOption(imemHeightArg);
 
         char imemChannelsArg[256];
         sprintf(imemChannelsArg, "--imem-channels=%d", iFrameDepth);
-        options.push_back(imemChannelsArg);
+        optionsHandler.AddOption(imemChannelsArg);
 
-        options.push_back("--verbose=2");
-
-        Controler ctrl(sFileLocation, options);
+        Controler ctrl(sFileLocation, optionsHandler.GetOptions());
         ctrl.Run();
 
         return 0;
