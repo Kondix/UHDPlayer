@@ -31,9 +31,10 @@ public:
     std::vector<Frame>& GetFrames() { return m_vFrames; }
     int64_t& GetPts() { return m_iPts; }
     void AddFrame(Frame frame) { m_vFrames.push_back(frame); }
-    void ClearFrames () { m_vFrames.clear(); }
+    void ClearFrames() { m_vFrames.clear(); }
+    void ClearFirstFrame() {m_vFrames.erase(m_vFrames.begin()); }
     void SetDts(int64_t iDts) { m_iDts = iDts; }
-    void SetPts(int64_t iPts) { m_iDts = iPts; }
+    void SetPts(int64_t iPts) { m_iPts = iPts; }
 
 };
 

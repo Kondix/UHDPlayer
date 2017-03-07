@@ -5,8 +5,6 @@
 #include <unistd.h>
 #include "Types.h"
 
-int g_Cnt = 0;
-
 namespace Callbacks
 {
     int MyImemGetCallback (void *data, const char *cookie, int64_t *dts, int64_t *pts, unsigned *flags, size_t * bufferSize, void ** buffer)
@@ -21,6 +19,12 @@ namespace Callbacks
             framesHandler->SetDts(iSetUp);
             framesHandler->SetPts(iSetUp);
             *dts = *pts = iSetUp;
+
+            if (framesHandler->GetFramesCount() > 1)
+            {
+                framesHandler->ClearFirstFrame();
+            }
+
         }
 
         return 0;
