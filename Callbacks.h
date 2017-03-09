@@ -7,6 +7,9 @@
 
 namespace Callbacks
 {
+
+    //bool first = false;
+
     int MyImemGetCallback (void *data, const char *cookie, int64_t *dts, int64_t *pts, unsigned *flags, size_t * bufferSize, void ** buffer)
     {
         FramesHandler* framesHandler = (FramesHandler*)data;
@@ -15,10 +18,21 @@ namespace Callbacks
         if (framesHandler->GetFramesCount() > 0)
         {
             *buffer = framesHandler->GetFrame(0);
-            int64_t iSetUp = framesHandler->GetPts() + iFPS;
-            framesHandler->SetDts(iSetUp);
-            framesHandler->SetPts(iSetUp);
-            *dts = *pts = iSetUp;
+
+             int64_t iSetUp = framesHandler->GetPts() + iFPS;
+//            if(first)
+//            {
+//                    iSetUp=0;
+//                    framesHandler->SetDts(iSetUp);
+//                    framesHandler->SetPts(iSetUp);
+//                    *dts = *pts = iSetUp;
+//            }
+//            else
+//            {
+                    framesHandler->SetDts(iSetUp);
+                    framesHandler->SetPts(iSetUp);
+                    *dts = *pts = iSetUp;
+//            }
 
             if (framesHandler->GetFramesCount() > 1)
             {

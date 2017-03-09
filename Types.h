@@ -6,11 +6,11 @@
 
 const int iFrameW = 1920;
 const int iFrameH = 1080;
-const int iFrameDepth = 32;
+const int iFrameDepth = 24;
 const int iBitByte = 8;
 const int iMovieByteSize = iFrameW*iFrameH*iFrameDepth/iBitByte;
-const int64_t iFPS = 33333;
-const std::string sFileLocation = "/home/kjagielski/CLionProjects/UHDPlayer/sampleVideos/tractor.raw";
+const int64_t iFPS = 40000;
+const std::string sFileLocation = "/home/barti/CLionProjects/UHDPlayer/sampleVideos/tractor.raw";
 
 typedef char* Frame;
 

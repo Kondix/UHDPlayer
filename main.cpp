@@ -3,7 +3,6 @@
 #include "ImemOptionsHandler.h"
 
 bool DisplayHandler::m_bDone = false;
-
     int main()
     {
         RawDataHandler rdh(sFileLocation);
@@ -17,9 +16,10 @@ bool DisplayHandler::m_bDone = false;
 
         ImemOptionsHandler optionsHandler;
         optionsHandler.AddOption("--no-video-title-show");
-        optionsHandler.AddOption("--imem-codec=I420");
+        optionsHandler.AddOption("--imem-codec=GREY");
         optionsHandler.AddOption("--imem-cookie=test");
         optionsHandler.AddOption("--imem-cat=2");
+        //optionsHandler.AddOption("--imem-fps=25");
         optionsHandler.AddOption("--verbose=2");
 
         char imemDataArg[256];
