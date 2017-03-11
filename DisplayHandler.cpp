@@ -29,18 +29,18 @@ void DisplayHandler::Play(FramesHandler& framesHandler, RawDataHandler& rdh, cha
 
     int it=1;
     while (!m_bDone) {
-        rdh.GetFrame(iMovieByteSize, cBuffer);
-        framesHandler.AddFrame(cBuffer);
-        if (it < 20)
-        {  std::ofstream myfile;
-            myfile.open("example" + std::to_string(it) + ".txt");
-            if (myfile.is_open())
-            {
-                myfile<<(cBuffer);
-                myfile.close();
-                it++;
-            }
-        }
+//        rdh.GetFrame(iMovieByteSize, cBuffer);
+//        framesHandler.AddFrame(cBuffer);
+//        if (it < 20)
+//        {  std::ofstream myfile;
+//            myfile.open("example" + std::to_string(it) + ".txt");
+//            if (myfile.is_open())
+//            {
+//                myfile<<(cBuffer);
+//                myfile.close();
+//                it++;
+//            }
+//        }
         sleep(1);
     }
 

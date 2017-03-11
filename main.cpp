@@ -1,22 +1,31 @@
 #include "Callbacks.h"
 #include "Controler.h"
 #include "ImemOptionsHandler.h"
+#include "ThreadsHandler.h"
 
 bool DisplayHandler::m_bDone = false;
+
+
     int main()
     {
-        RawDataHandler rdh(sFileLocation);
 
         const int iSize = iFrameH*iFrameW*iFrameDepth/iBitByte;
-        char cStr[iSize];
-        rdh.GetFrame(iSize, cStr);
-
+        RawDataHandler rdh(sFileLocation);
         FramesHandler framesHandler;
-        framesHandler.AddFrame(cStr);
+        Threadshandler threadshandler;
+        char cStr[iSize];
+
+
+        threadshandler.CreateNFramesGetterThreads(5, &rdh ,&framesHandler,iSize,cStr);
+
+
+        //rdh.GetFrame(iSize, cStr);
+        //panwatek.join();
+       // framesHandler.AddFrame(cStr);
 
         ImemOptionsHandler optionsHandler;
         optionsHandler.AddOption("--no-video-title-show");
-        optionsHandler.AddOption("--imem-codec=GREY");
+        optionsHandler.AddOption("--imem-codec=I420");
         optionsHandler.AddOption("--imem-cookie=test");
         optionsHandler.AddOption("--imem-cat=2");
         //optionsHandler.AddOption("--imem-fps=25");
@@ -47,7 +56,12 @@ bool DisplayHandler::m_bDone = false;
         optionsHandler.AddOption(imemChannelsArg);
 
         Controler ctrl(sFileLocation, optionsHandler.GetOptions());
-        ctrl.Run(framesHandler, rdh, cStr);
+       // panywatki.push_back(std::thread(&Controler::Run, &ctrl, &framesHandler, &rdh, cStr));
+        ctrl.Run(framesHandler,rdh,cStr);
+
+       // panwatek2.join();
+
+       // threadshandler.JoinAll();
 
         return 0;
     }

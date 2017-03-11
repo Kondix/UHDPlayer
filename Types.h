@@ -3,10 +3,11 @@
 
 #include <string>
 #include <vector>
+#include <deque>
 
 const int iFrameW = 1920;
 const int iFrameH = 1080;
-const int iFrameDepth = 24;
+const int iFrameDepth = 12;
 const int iBitByte = 8;
 const int iMovieByteSize = iFrameW*iFrameH*iFrameDepth/iBitByte;
 const int64_t iFPS = 40000;
@@ -17,7 +18,7 @@ typedef char* Frame;
 class FramesHandler
 {
 private:
-    std::vector<Frame> m_vFrames;
+    std::deque<Frame> m_vFrames;
     int64_t m_iDts;
     int64_t m_iPts;
 
@@ -28,7 +29,7 @@ public:
     int64_t& GetDts() { return m_iDts; }
     Frame& GetFrame(int iIdx) { return m_vFrames[iIdx]; }
     size_t GetFramesCount() { return m_vFrames.size(); }
-    std::vector<Frame>& GetFrames() { return m_vFrames; }
+    std::deque<Frame>& GetFrames() { return m_vFrames; }
     int64_t& GetPts() { return m_iPts; }
     void AddFrame(Frame frame) { m_vFrames.push_back(frame); }
     void ClearFrames() { m_vFrames.clear(); }
