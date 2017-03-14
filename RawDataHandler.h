@@ -8,6 +8,7 @@
 class RawDataHandler {
 private:
     FileOpener* m_pFileOpener;
+    bool eofFlag = false;
 public:
     RawDataHandler(std::string sFileLocation)
     {
@@ -20,6 +21,7 @@ public:
     }
 
     void GetFrame(int iFrameSize, char* cBuffer);
+    bool GetEof(){ return eofFlag;}
 };
 
 

@@ -27,21 +27,9 @@ void DisplayHandler::Play(FramesHandler& framesHandler, RawDataHandler& rdh, cha
 {
     libvlc_media_player_play(m_pMediaPlayer);
 
-    int it=1;
     while (!m_bDone) {
-//        rdh.GetFrame(iMovieByteSize, cBuffer);
-//        framesHandler.AddFrame(cBuffer);
-//        if (it < 20)
-//        {  std::ofstream myfile;
-//            myfile.open("example" + std::to_string(it) + ".txt");
-//            if (myfile.is_open())
-//            {
-//                myfile<<(cBuffer);
-//                myfile.close();
-//                it++;
-//            }
-//        }
-        sleep(1);
+
+       // sleep(1);
     }
 
     ReleaseMedia();

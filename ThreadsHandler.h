@@ -6,7 +6,6 @@
 #define UHDPLAYER_THREADSHANDLER_H
 
 #include <thread>
-#include <mutex>
 #include <vector>
 #include "Controler.h"
 
@@ -16,10 +15,10 @@ private:
     std::vector<std::thread*> m_ThreadsVector;
 
 public:
-    std:: mutex m_mtx;
+
 
 public:
-    void AddThread(std::thread *thread)
+    void AddThread(std::thread* thread)
     {
         m_ThreadsVector.push_back(thread);
     }
@@ -31,26 +30,24 @@ public:
             AddThread(&thread);
         }
     }
-    void JoinAll()
-    {
-        for(auto& item : m_ThreadsVector)
-            (*item).detach();
-    }
-//    std::thread GetThread(int idx)
-//    {
-//        return m_ThreadsVector[idx];
-//    }
 
     void GetFrameToBuffer(RawDataHandler *rawDataHandler, FramesHandler *framesHandler, int iFrameSize, char *buffer)
     {
-        while (!DisplayHandler::m_bDone) {
+        while (!DisplayHandler::m_bDone && !rawDataHandler->GetEof())
+        {
 
             m_mtx.lock();
+            if(framesHandler->GetFramesCount()<3)
+            {
             rawDataHandler->GetFrame(iFrameSize, buffer);
             framesHandler->AddFrame(buffer);
-           // std::cout<<framesHandler->GetFramesCount();
+            }
             m_mtx.unlock();
+            //std::this_thread::sleep_for(std::chrono::microseconds(40000));
         }
+        if(rawDataHandler->GetEof())
+            return;
+
     }
 };
 

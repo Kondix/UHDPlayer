@@ -4,14 +4,16 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <mutex>
 
 const int iFrameW = 1920;
 const int iFrameH = 1080;
-const int iFrameDepth = 12;
+const int iFrameDepth = 24;
 const int iBitByte = 8;
 const int iMovieByteSize = iFrameW*iFrameH*iFrameDepth/iBitByte;
 const int64_t iFPS = 40000;
 const std::string sFileLocation = "/home/barti/CLionProjects/UHDPlayer/sampleVideos/tractor.raw";
+static std:: mutex m_mtx;
 
 typedef char* Frame;
 

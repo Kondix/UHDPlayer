@@ -16,19 +16,15 @@ bool DisplayHandler::m_bDone = false;
         char cStr[iSize];
 
 
-        threadshandler.CreateNFramesGetterThreads(5, &rdh ,&framesHandler,iSize,cStr);
+        threadshandler.CreateNFramesGetterThreads(1, &rdh ,&framesHandler,iSize,cStr);
 
-
-        //rdh.GetFrame(iSize, cStr);
-        //panwatek.join();
-       // framesHandler.AddFrame(cStr);
 
         ImemOptionsHandler optionsHandler;
         optionsHandler.AddOption("--no-video-title-show");
         optionsHandler.AddOption("--imem-codec=I420");
         optionsHandler.AddOption("--imem-cookie=test");
         optionsHandler.AddOption("--imem-cat=2");
-        //optionsHandler.AddOption("--imem-fps=25");
+        optionsHandler.AddOption("--imem-fps=25");
         optionsHandler.AddOption("--verbose=2");
 
         char imemDataArg[256];
@@ -56,12 +52,8 @@ bool DisplayHandler::m_bDone = false;
         optionsHandler.AddOption(imemChannelsArg);
 
         Controler ctrl(sFileLocation, optionsHandler.GetOptions());
-       // panywatki.push_back(std::thread(&Controler::Run, &ctrl, &framesHandler, &rdh, cStr));
         ctrl.Run(framesHandler,rdh,cStr);
 
-       // panwatek2.join();
-
-       // threadshandler.JoinAll();
 
         return 0;
     }
