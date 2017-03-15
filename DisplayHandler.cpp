@@ -23,7 +23,7 @@ void DisplayHandler::HandleEvent(const libvlc_event_t* pEvt, void*)
     }
 }
 
-void DisplayHandler::Play(FramesHandler& framesHandler, RawDataHandler& rdh, char* cBuffer)
+void DisplayHandler::Play(FramesHandler& framesHandler, RawDataHandler& rdh)
 {
     libvlc_media_player_play(m_pMediaPlayer);
 

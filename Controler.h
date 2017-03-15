@@ -38,7 +38,7 @@ public:
     };
 
 public:
-    void Run(FramesHandler& framesHandler, RawDataHandler& rdh, char* cBuffer);
+    void Run(FramesHandler& framesHandler, RawDataHandler& rdh);
 };
 
 

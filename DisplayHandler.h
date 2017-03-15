@@ -37,7 +37,7 @@ public:
 public:
     int AttachEvent(libvlc_event_type_t iEventType);
     static void HandleEvent(const libvlc_event_t* pEvt, void*);
-    void Play(FramesHandler& framesHandler, RawDataHandler& rdh, char* cBuffer);
+    void Play(FramesHandler& framesHandler, RawDataHandler& rdh);
     void ReleaseMedia();
 
 };

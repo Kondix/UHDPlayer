@@ -15,7 +15,7 @@ bool DisplayHandler::m_bDone = false;
         ThreadsHandler threadsHandler;
 
 
-        threadsHandler.CreateNFramesGetterThreads(50, &rdh ,&framesHandler,iSize);
+        threadsHandler.CreateNFramesGetterThreads(2, &rdh ,&framesHandler,iSize);
 
 
         ImemOptionsHandler optionsHandler;
