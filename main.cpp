@@ -12,11 +12,10 @@ bool DisplayHandler::m_bDone = false;
         const int iSize = iFrameH*iFrameW*iFrameDepth/iBitByte;
         RawDataHandler rdh(sFileLocation);
         FramesHandler framesHandler;
-        Threadshandler threadshandler;
-        char cStr[iSize];
+        ThreadsHandler threadsHandler;
 
 
-        threadshandler.CreateNFramesGetterThreads(1, &rdh ,&framesHandler,iSize,cStr);
+        threadsHandler.CreateNFramesGetterThreads(50, &rdh ,&framesHandler,iSize);
 
 
         ImemOptionsHandler optionsHandler;
@@ -52,7 +51,7 @@ bool DisplayHandler::m_bDone = false;
         optionsHandler.AddOption(imemChannelsArg);
 
         Controler ctrl(sFileLocation, optionsHandler.GetOptions());
-        ctrl.Run(framesHandler,rdh,cStr);
+        ctrl.Run(framesHandler,rdh);
 
 
         return 0;
