@@ -19,5 +19,4 @@ public:
     std::vector<const char*>& GetOptions() { return m_vOptions; }
 };
 
-
 #endif //UHDPLAYER_IMEMOPTIONSHANDLER_H

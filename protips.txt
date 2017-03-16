@@ -13,6 +13,12 @@ How to convert video to raw sequence:
 
 ffmpeg -i INPUT -f rawvideo -vcodec rawvideo OUTPUT
 
+#####################################
+How to extract firts 10 sec of video:
+#####################################
+
+ffmpeg -i INPUT -t 10 -f rawvideo -vcodec rawvideo OUTPUT
+
 ###############################
 How to play raw video sequence:
 ###############################

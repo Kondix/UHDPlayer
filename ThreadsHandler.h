@@ -1,7 +1,3 @@
-//
-// Created by barti on 11.03.17.
-//
-
 #ifndef UHDPLAYER_THREADSHANDLER_H
 #define UHDPLAYER_THREADSHANDLER_H
 

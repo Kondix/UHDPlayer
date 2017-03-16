@@ -9,9 +9,9 @@
 namespace Callbacks
 {
 
-    int MyImemGetCallback (void *data, const char *cookie, int64_t *dts, int64_t *pts, unsigned *flags, size_t * bufferSize, void ** buffer)
+    int MyImemGetCallback (void* data, const char* , int64_t *dts, int64_t *pts, unsigned* , size_t* bufferSize, void** buffer)
     {
-        m_mtx.lock();
+        g_mtx.lock();
         FramesHandler* framesHandler = (FramesHandler*)data;
 
         *bufferSize = iFrameH*iFrameW*iFrameDepth/iBitByte;
@@ -26,13 +26,13 @@ namespace Callbacks
             framesHandler->SetPts(iSetUp);
             *dts = *pts = iSetUp;
         }
-        m_mtx.unlock();
+        g_mtx.unlock();
         return 0;
     }
 
-    int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, void* buffer)
+    int MyImemReleaseCallback (void* data, const char* , size_t , void* )
     {
-        m_mtx.lock();
+        g_mtx.lock();
         FramesHandler* framesHandler = (FramesHandler*)data;
         if (framesHandler->GetFramesCount() > 1)
         {
@@ -43,7 +43,7 @@ namespace Callbacks
             framesHandler->ClearFrames();
             DisplayHandler::m_bDone = true;
         }
-        m_mtx.unlock();
+        g_mtx.unlock();
         return 0;
     }
 }
