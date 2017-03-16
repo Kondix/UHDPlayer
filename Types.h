@@ -8,12 +8,14 @@
 
 const int iFrameW = 1920;
 const int iFrameH = 1080;
-const int iFrameDepth = 24;
+const int iFrameDepth = 12;
 const int iBitByte = 8;
 const int iMovieByteSize = iFrameW*iFrameH*iFrameDepth/iBitByte;
+const int iMaxFramesInQueue = 5;
 const int64_t iFPS = 40000;
 const std::string sFileLocation = "/home/barti/CLionProjects/UHDPlayer/sampleVideos/tractor.raw";
 static std:: mutex m_mtx;
+
 
 typedef char* Frame;
 
@@ -25,6 +27,8 @@ private:
     int64_t m_iPts;
 
 public:
+    bool m_bNothingElseInFile = false;
+public:
     FramesHandler() : m_vFrames(0), m_iDts(0), m_iPts(0) {}
     ~FramesHandler() {}
 
@@ -33,12 +37,16 @@ public:
     size_t GetFramesCount() { return m_vFrames.size(); }
     std::deque<Frame>& GetFrames() { return m_vFrames; }
     int64_t& GetPts() { return m_iPts; }
-    void AddFrame(Frame frame) { m_vFrames.push_back(frame); }
+    void AddFrameToDeque(Frame frame) { m_vFrames.push_back(frame); }
     void ClearFrames() { m_vFrames.clear(); }
-    void ClearFirstFrame() {m_vFrames.erase(m_vFrames.begin()); }
+    void ClearFirstFrame() {
+        //not sure if its necessary here
+        Frame t_toDeleteFrame = m_vFrames.front();
+        m_vFrames.erase(m_vFrames.begin());
+        delete(t_toDeleteFrame);
+    }
     void SetDts(int64_t iDts) { m_iDts = iDts; }
     void SetPts(int64_t iPts) { m_iPts = iPts; }
-
 };
 
 #endif //UHDPLAYER_TYPES_H

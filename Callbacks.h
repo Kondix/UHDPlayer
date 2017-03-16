@@ -25,21 +25,23 @@ namespace Callbacks
             framesHandler->SetDts(iSetUp);
             framesHandler->SetPts(iSetUp);
             *dts = *pts = iSetUp;
-
-
-            m_mtx.unlock();
         }
-
+        m_mtx.unlock();
         return 0;
     }
 
-    int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, void * buffer)
+    int MyImemReleaseCallback (void *data, const char *cookie, size_t bufferSize, void* buffer)
     {
         m_mtx.lock();
         FramesHandler* framesHandler = (FramesHandler*)data;
         if (framesHandler->GetFramesCount() > 1)
         {
             framesHandler->ClearFirstFrame();
+        }
+        if(framesHandler->m_bNothingElseInFile && framesHandler->GetFramesCount() <= 1)
+        {
+            framesHandler->ClearFrames();
+            DisplayHandler::m_bDone = true;
         }
         m_mtx.unlock();
         return 0;

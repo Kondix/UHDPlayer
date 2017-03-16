@@ -2,10 +2,14 @@
 #include <fstream>
 #include <iostream>
 #include "RawDataHandler.h"
+#include "Types.h"
 
-void RawDataHandler::GetFrame(int iFrameSize, char* cBuffer)
-{
+bool RawDataHandler::LoadFrameToFromStreamToBuffer(int iFrameSize, char *cBuffer)
+{    if(m_pFileOpener->GetInputFileStream().eof())
+    {
+        return false;
+    }
     m_pFileOpener->GetInputFileStream().read(cBuffer, iFrameSize);
-    if(m_pFileOpener->GetInputFileStream().eof())
-        eofFlag = true;
+    return true;
+
 }

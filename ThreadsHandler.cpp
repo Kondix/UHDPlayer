@@ -20,20 +20,22 @@ void ThreadsHandler::CreateNFramesGetterThreads(int countOfThreads, RawDataHandl
 }
 void ThreadsHandler::GetFrameToBuffer(RawDataHandler *rawDataHandler, FramesHandler *framesHandler, int iFrameSize)
 {
-    while (!DisplayHandler::m_bDone && !rawDataHandler->GetEof())
+    while (!DisplayHandler::m_bDone)
     {
 
         m_mtx.lock();
-        if(framesHandler->GetFramesCount()<3)
+        if(framesHandler->GetFramesCount()<iMaxFramesInQueue)
         {
             char* buffer = new char[iFrameSize];
-            rawDataHandler->GetFrame(iFrameSize, buffer);
-            framesHandler->AddFrame(buffer);
+            framesHandler->m_bNothingElseInFile = !rawDataHandler->LoadFrameToFromStreamToBuffer(iFrameSize, buffer);
+            if(framesHandler->m_bNothingElseInFile)
+                return;
+            framesHandler->AddFrameToDeque(buffer);
         }
         m_mtx.unlock();
         //std::this_thread::sleep_for(std::chrono::microseconds(40000));
     }
-    if(rawDataHandler->GetEof())
+    if(framesHandler->m_bNothingElseInFile)
         return;
 
 }
