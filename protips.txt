@@ -24,3 +24,14 @@ How to play raw video sequence:
 ###############################
 
 ffplay -f rawvideo -s 1920x1080 INPUT
+
+################################################
+How to force set higher resolution using xrandr:
+################################################
+
+1. Find connected device using: 'xrandr'
+2. Calculate old/new resoluton ratio (for both dimensions)
+3. Change scale using: 'xrandr --output OUTPUT --scale SCALE'
+4. Change scale back using: 'xrandr --output OUTPUT --scale 1x1'
+5. Set previous resolution using: 'xrandr --fb RESOLUTION'
+
