@@ -14,10 +14,22 @@ How to convert video to raw sequence:
 ffmpeg -i INPUT -f rawvideo -vcodec rawvideo OUTPUT
 
 #####################################
-How to extract firts 10 sec of video:
+How to extract first 10 sec of video:
 #####################################
 
 ffmpeg -i INPUT -t 10 -f rawvideo -vcodec rawvideo OUTPUT
+
+#################################################################
+How to extract firts 10 sec of video in yuv444p10be pixel format:
+#################################################################
+
+ffmpeg -i INPUT -t 10 -f rawvideo -vcodec rawvideo -pix_fmt yuv444p10be OUTPUT
+
+######################
+Usefull pixel formats:
+######################
+
+yuv444p10be: I4AB
 
 ###############################
 How to play raw video sequence:
