@@ -18,19 +18,30 @@ void ThreadsHandler::GetFrameToBuffer(RawDataHandler *rawDataHandler, FramesHand
 {
     while (!DisplayHandler::m_bDone)
     {
-
         g_mtx.lock();
         if(framesHandler->GetFramesCount()<iMaxFramesInQueue)
         {
-            char* buffer = new char[iFrameSize];
-            framesHandler->m_bNothingElseInFile = !rawDataHandler->LoadFrameToFromStreamToBuffer(iFrameSize, buffer);
-            if(framesHandler->m_bNothingElseInFile)
-                return;
-            framesHandler->AddFrameToDeque(buffer);
+            LoadFrameAndAddToQueue(iFrameSize, framesHandler, rawDataHandler);
         }
         g_mtx.unlock();
     }
     if(framesHandler->m_bNothingElseInFile)
         return;
-
 }
+
+void ThreadsHandler::PreloadCache(int iFrameSize, FramesHandler* framesHandler, RawDataHandler* rawDataHandler)
+{
+    while (!framesHandler->m_bNothingElseInFile)
+    {
+        LoadFrameAndAddToQueue(iFrameSize, framesHandler, rawDataHandler);
+    }
+}
+
+void ThreadsHandler::LoadFrameAndAddToQueue(int iFrameSize, FramesHandler* framesHandler, RawDataHandler* rawDataHandler)
+{
+    char* buffer = new char[iFrameSize];
+    framesHandler->m_bNothingElseInFile = !rawDataHandler->LoadFrameToFromStreamToBuffer(iFrameSize, buffer);
+    if(framesHandler->m_bNothingElseInFile)
+        return;
+    framesHandler->AddFrameToDeque(buffer);
+};

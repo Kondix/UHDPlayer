@@ -16,6 +16,7 @@ const int64_t iFPS = 40000;
 const std::string sFileLocation = "/home/kjagielski/CLionProjects/UHDPlayer/sampleVideos/puppies.raw";
 static std:: mutex g_mtx;
 
+const bool bShouldPreloadCache = true;
 
 typedef char* Frame;
 

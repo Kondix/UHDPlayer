@@ -14,7 +14,8 @@ public:
     void AddThread(std::thread* thread);
     void CreateNFramesGetterThreads(int countOfThreads, RawDataHandler *rawDataHandler, FramesHandler *framesHandler, int iFrameSize);
     void GetFrameToBuffer(RawDataHandler *rawDataHandler, FramesHandler *framesHandler, int iFrameSize);
-
+    void LoadFrameAndAddToQueue(int iFrameSize, FramesHandler* framesHandler, RawDataHandler* rawDataHandler);
+    void PreloadCache(int iFrameSize, FramesHandler* framesHandler, RawDataHandler* rawDataHandler);
 };
 
 

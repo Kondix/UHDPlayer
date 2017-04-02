@@ -3,15 +3,16 @@
 
 bool DisplayHandler::m_bDone = false;
 
-
     int main()
     {
-        const int iSize = iFrameH*iFrameW*iFrameDepth/iBitByte;
         RawDataHandler rdh(sFileLocation);
         FramesHandler framesHandler;
         ThreadsHandler threadsHandler;
 
-        threadsHandler.CreateNFramesGetterThreads(2, &rdh ,&framesHandler,iSize);
+        if (bShouldPreloadCache)
+            threadsHandler.PreloadCache(iMovieByteSize, &framesHandler, &rdh);
+        else
+            threadsHandler.CreateNFramesGetterThreads(2, &rdh, &framesHandler, iMovieByteSize);
 
         ImemOptionsHandler optionsHandler;
         optionsHandler.AddOption("--no-video-title-show");
@@ -47,7 +48,6 @@ bool DisplayHandler::m_bDone = false;
 
         Controler ctrl(sFileLocation, optionsHandler.GetOptions());
         ctrl.Run(framesHandler,rdh);
-
 
         return 0;
     }
