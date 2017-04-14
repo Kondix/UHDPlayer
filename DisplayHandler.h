@@ -11,7 +11,7 @@
 
 
 class DisplayHandler {
-private:
+public:
     libvlc_media_player_t* m_pMediaPlayer;
     libvlc_event_manager_t* m_pEventManager;
     libvlc_media_t* m_pMedia;
@@ -35,7 +35,7 @@ public:
 public:
     int AttachEvent(libvlc_event_type_t iEventType);
     static void HandleEvent(const libvlc_event_t* pEvt, void*);
-    void Play(FramesHandler& framesHandler, RawDataHandler& rdh);
+    void Play();
     void ReleaseMedia();
 
 };

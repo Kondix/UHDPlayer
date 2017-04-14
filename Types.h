@@ -6,17 +6,17 @@
 #include <deque>
 #include <mutex>
 
-const int iFrameW = 4096;
-const int iFrameH = 2304;
+const int iFrameW = 1920;
+const int iFrameH = 1080;
 const int iFrameDepth = 12;
 const int iBitByte = 8;
 const int iMovieByteSize = iFrameW*iFrameH*iFrameDepth/iBitByte;
 const int iMaxFramesInQueue = 5;
 const int64_t iFPS = 40000;
-const std::string sFileLocation = "/home/kjagielski/CLionProjects/UHDPlayer/sampleVideos/puppies.raw";
+const std::string sFileLocation = "/home/barti/CLionProjects/UHDPlayer/sampleVideos/tractor.raw";
 static std:: mutex g_mtx;
 
-const bool bShouldPreloadCache = true;
+const bool bShouldPreloadCache = false;
 
 typedef char* Frame;
 

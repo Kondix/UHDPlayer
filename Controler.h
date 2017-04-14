@@ -12,11 +12,15 @@
 #define UHDPLAYER_CONTROLER_H
 
 class Controler {
-private:
+public:
     libvlc_instance_t* m_VLCInstance;
     libvlc_media_t* m_pMedia;
     DisplayHandler* m_DisplayHandler;
 public:
+    Controler()
+    {
+
+    }
     Controler(std::string sFileLocation)
     {
         m_VLCInstance = libvlc_new(0, nullptr);
@@ -24,7 +28,7 @@ public:
         m_DisplayHandler = new DisplayHandler(m_VLCInstance, m_pMedia);
     };
 
-    Controler(std::string sFileLocation, std::vector<const char*> vcOptions)
+    Controler(std::vector<const char*> vcOptions)
     {
         m_VLCInstance = libvlc_new(int(vcOptions.size()), vcOptions.data());
         m_pMedia = libvlc_media_new_location (m_VLCInstance, "imem://");
@@ -38,7 +42,7 @@ public:
     };
 
 public:
-    void Run(FramesHandler& framesHandler, RawDataHandler& rdh);
+    void Run();
 };
 
 
