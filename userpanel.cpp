@@ -7,6 +7,8 @@
 #include "Callbacks.h"
 
 
+
+
 UserPanel::UserPanel(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::UserPanel)
@@ -124,12 +126,12 @@ void UserPanel::StartPlayback()
     sprintf(imemChannelsArg, "--imem-channels=%d", iFrameDepth);
     optionsHandler.AddOption(imemChannelsArg);
 
-    Controler* controler = new Controler(optionsHandler.GetOptions());
+    std::shared_ptr<Controler> controler(new Controler(optionsHandler.GetOptions()));
 
     VideoPanel* video = new VideoPanel(controler);
     video->showFullScreen();
     controler->Run();
-    threadsHandler.StopPlayBackThread(controler->m_DisplayHandler->m_pMediaPlayer, controler, video);
+    threadsHandler.StopPlayBackThread(controler->m_DisplayHandler->m_pMediaPlayer,controler,video);
 
 
    // delete video;

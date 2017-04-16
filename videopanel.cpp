@@ -1,7 +1,7 @@
 #include "videopanel.h"
 #include "ui_videopanel.h"
 
-VideoPanel::VideoPanel(Controler* controler, QWidget *parent) :
+VideoPanel::VideoPanel(std::shared_ptr<Controler> controler, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::VideoPanel)
 {

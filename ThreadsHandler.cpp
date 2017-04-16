@@ -48,13 +48,13 @@ void ThreadsHandler::LoadFrameAndAddToQueue(int iFrameSize, FramesHandler* frame
 };
 
 
-void ThreadsHandler::StopPlayBackThread(libvlc_media_player_t* mp, Controler* controler, VideoPanel* video)
+void ThreadsHandler::StopPlayBackThread(libvlc_media_player_t* mp,  std::shared_ptr<Controler> controler, VideoPanel* video)
 {
     std::thread thread = std::thread(&ThreadsHandler::StopPlayBack, this, mp, controler, video);
     thread.join();
 }
 
-void ThreadsHandler::StopPlayBack(libvlc_media_player_t* mp, Controler* controler, VideoPanel* video)
+void ThreadsHandler::StopPlayBack(libvlc_media_player_t* mp,  std::shared_ptr<Controler> controler, VideoPanel* video)
 {
     while (!DisplayHandler::m_bDone) {
 
@@ -62,8 +62,8 @@ void ThreadsHandler::StopPlayBack(libvlc_media_player_t* mp, Controler* controle
 
     }
 
-    libvlc_media_player_stop(mp);
-    delete controler;
-    delete video;
+//    libvlc_media_player_stop(mp);
+//    delete controler;
+//    delete video;
 
 }

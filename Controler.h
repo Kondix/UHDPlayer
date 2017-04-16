@@ -29,7 +29,7 @@ public:
         m_DisplayHandler = new DisplayHandler(m_VLCInstance, m_pMedia);
     };
 
-    Controler(std::vector<const char*> vcOptions)
+    Controler(std::vector<const char*> &vcOptions)
     {
         m_VLCInstance = libvlc_new(int(vcOptions.size()), vcOptions.data());
         m_pMedia = libvlc_media_new_location (m_VLCInstance, "imem://");

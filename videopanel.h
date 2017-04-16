@@ -8,6 +8,7 @@
 #include <VLCQtCore/Media.h>
 #include <VLCQtCore/MediaPlayer.h>
 #include "Controler.h"
+#include <memory>
 
 
 namespace Ui {
@@ -19,7 +20,7 @@ class VideoPanel : public QDialog
     Q_OBJECT
 
 public:
-    explicit VideoPanel(Controler* controler, QWidget *parent = 0);
+    explicit VideoPanel(std::shared_ptr<Controler> controler, QWidget *parent = 0);
     ~VideoPanel();
 
 private slots:
