@@ -8,6 +8,7 @@
 #include "RawDataHandler.h"
 
 
+
 #ifndef UHDPLAYER_CONTROLER_H
 #define UHDPLAYER_CONTROLER_H
 
@@ -37,8 +38,9 @@ public:
 
     virtual ~Controler()
     {
-        libvlc_release(m_VLCInstance);
         delete m_DisplayHandler;
+        libvlc_media_release(m_pMedia);
+        libvlc_release(m_VLCInstance);
     };
 
 public:

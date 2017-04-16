@@ -4,6 +4,7 @@
 #include <thread>
 #include <vector>
 #include "Controler.h"
+#include "videopanel.h"
 
 class ThreadsHandler {
 
@@ -16,6 +17,8 @@ public:
     void GetFrameToBuffer(RawDataHandler *rawDataHandler, FramesHandler *framesHandler, int iFrameSize);
     void LoadFrameAndAddToQueue(int iFrameSize, FramesHandler* framesHandler, RawDataHandler* rawDataHandler);
     void PreloadCache(int iFrameSize, FramesHandler* framesHandler, RawDataHandler* rawDataHandler);
+    void StopPlayBackThread(libvlc_media_player_t* mp, Controler* controler, VideoPanel* video);
+    void StopPlayBack(libvlc_media_player_t* mp, Controler* controler, VideoPanel* video);
 };
 
 

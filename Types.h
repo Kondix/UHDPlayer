@@ -16,9 +16,11 @@ const int64_t iFPS = 40000;
 const std::string sFileLocation = "/home/barti/CLionProjects/UHDPlayer/sampleVideos/tractor.raw";
 static std:: mutex g_mtx;
 
+
 const bool bShouldPreloadCache = false;
 
 typedef char* Frame;
+
 
 class FramesHandler
 {

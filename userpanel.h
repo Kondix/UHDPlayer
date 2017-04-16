@@ -34,10 +34,18 @@ private slots:
 
     void on_proccedButton_clicked();
 
+    void on_pushButton_released();
+
+    void StartPlayback();
+
+    void WriteToFile();
+
+
 public:
     Ui::UserPanel *ui;
 private:
     bool states[5];
+    std::string testsOutputToFileString;
 };
 
 #endif // USERPANEL_H

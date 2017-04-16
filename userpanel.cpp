@@ -2,8 +2,6 @@
 #include "ui_userpanel.h"
 
 #include "videopanel.h"
-#include "RawDataHandler.h"
-#include "Types.h"
 #include "ThreadsHandler.h"
 #include "ImemOptionsHandler.h"
 #include "Callbacks.h"
@@ -14,6 +12,8 @@ UserPanel::UserPanel(QWidget *parent) :
     ui(new Ui::UserPanel)
 {
     ui->setupUi(this);
+
+    QDialog::showFullScreen();
     ui->startWidget->show();
     ui->ratingWidget->hide();
 }
@@ -25,13 +25,64 @@ UserPanel::~UserPanel()
 
 void UserPanel::on_textEdit_textChanged()
 {
-  //  ui->textEdit->
 }
 
 void UserPanel::on_pushButton_clicked()
 {
+
+}
+void UserPanel::on_five_toggled(bool checked)
+{
+    states[4] = checked;
+}
+
+void UserPanel::on_four_toggled(bool checked)
+{
+    states[3] = checked;
+}
+
+void UserPanel::on_three_toggled(bool checked)
+{
+    states[2] = checked;
+}
+
+void UserPanel::on_two_toggled(bool checked)
+{
+    states[1] = checked;
+}
+
+void UserPanel::on_one_toggled(bool checked)
+{
+    states[0] = checked;
+}
+
+void UserPanel::on_proccedButton_clicked()
+{
+    std::string addToFile = "";
+    for(int i = 0; i<5; i++)
+    {
+        if(states[i])
+        {
+            addToFile += std::to_string(states[i]);
+        }
+    }
+    testsOutputToFileString += addToFile + "\t";
+    //procced with next video
+    // StartPlayback()
+}
+
+
+void UserPanel::on_pushButton_released()
+{
+
+    testsOutputToFileString += (ui->textEdit->toPlainText()).toStdString() + "\t";;
     ui->startWidget->hide();
     ui->ratingWidget->show();
+    StartPlayback();
+
+}
+void UserPanel::StartPlayback()
+{
     RawDataHandler rdh(sFileLocation);
     FramesHandler framesHandler;
     ThreadsHandler threadsHandler;
@@ -73,46 +124,24 @@ void UserPanel::on_pushButton_clicked()
     sprintf(imemChannelsArg, "--imem-channels=%d", iFrameDepth);
     optionsHandler.AddOption(imemChannelsArg);
 
-    Controler controler(optionsHandler.GetOptions());
+    Controler* controler = new Controler(optionsHandler.GetOptions());
 
-    VideoPanel* video = new VideoPanel(controler.m_DisplayHandler->m_pMediaPlayer);
+    VideoPanel* video = new VideoPanel(controler);
+    video->showFullScreen();
+    controler->Run();
+    threadsHandler.StopPlayBackThread(controler->m_DisplayHandler->m_pMediaPlayer, controler, video);
+
+
+   // delete video;
+   // libvlc_media_player_stop(controler->m_DisplayHandler->m_pMediaPlayer);
 
 }
-void UserPanel::on_five_toggled(bool checked)
+void UserPanel::WriteToFile()
 {
-    states[4] = checked;
+    std::ofstream file;
+    file.open("wyniki.txt");
+    file << testsOutputToFileString + "\n";
+    file.close();
 }
 
-void UserPanel::on_four_toggled(bool checked)
-{
-    states[3] = checked;
-}
-
-void UserPanel::on_three_toggled(bool checked)
-{
-    states[2] = checked;
-}
-
-void UserPanel::on_two_toggled(bool checked)
-{
-    states[1] = checked;
-}
-
-void UserPanel::on_one_toggled(bool checked)
-{
-    states[0] = checked;
-}
-
-void UserPanel::on_proccedButton_clicked()
-{
-    std::string addToFile = "";
-    for(int i = 0; i<5; i++)
-    {
-        if(states[i])
-        {
-            addToFile += states[i];
-        }
-    }
-    //procced with next video
-}
 

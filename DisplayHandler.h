@@ -29,6 +29,12 @@ public:
         AddMedia();
     };
 
+    ~DisplayHandler()
+    {
+        libvlc_media_player_stop(m_pMediaPlayer);
+        libvlc_media_player_release(m_pMediaPlayer);
+    }
+
 public:
     static bool m_bDone;
 
@@ -37,7 +43,6 @@ public:
     static void HandleEvent(const libvlc_event_t* pEvt, void*);
     void Play();
     void ReleaseMedia();
-
 };
 
 

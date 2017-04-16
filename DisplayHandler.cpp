@@ -1,5 +1,6 @@
 #include "DisplayHandler.h"
 
+
 void DisplayHandler::AddMedia()
 {
     libvlc_media_player_set_media(m_pMediaPlayer, m_pMedia);
@@ -25,15 +26,8 @@ void DisplayHandler::HandleEvent(const libvlc_event_t* pEvt, void*)
 
 void DisplayHandler::Play()
 {
-
     libvlc_media_player_play(m_pMediaPlayer);
 
-    while (!m_bDone) {
-
-       sleep(1);
-    }
-
-    ReleaseMedia();
 }
 
 void DisplayHandler::ReleaseMedia()
