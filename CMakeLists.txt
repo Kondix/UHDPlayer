@@ -24,7 +24,7 @@ SET(GUI_Srcs
 
 
 set(SOURCE_FILES main.cpp DisplayHandler.cpp DisplayHandler.h Controler.cpp Controler.h FileOpener.h RawDataHandler.cpp RawDataHandler.h Types.h Callbacks.h
-        ImemOptionsHandler.h ThreadsHandler.cpp ThreadsHandler.h ${GUI_Srcs})
+        ImemOptionsHandler.h ThreadsHandler.cpp ThreadsHandler.h ${GUI_Srcs} PlayerConfigurationsHandler.cpp PlayerConfigurationsHandler.h MovieProperties.cpp MovieProperties.h)
 set(VLC_LIB /usr/lib/libvlc.so)
 add_executable(UHDPlayer ${SOURCE_FILES})
 LINK_DIRECTORIES(${VLC_LIB})

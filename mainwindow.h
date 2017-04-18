@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "adminpanel.h"
 #include "userpanel.h"
+#include "PlayerConfigurationsHandler.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,7 @@ private:
     Ui::MainWindow *ui;
     AdminPanel* adminPanel;
     UserPanel* userPanel;
+    PlayerConfigurationsHandler* playerConfigurationsHandler;
 };
 
 #endif // MAINWINDOW_H

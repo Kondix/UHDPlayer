@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "Controler.h"
+#include "PlayerConfigurationsHandler.h"
 
 
 namespace Ui {
@@ -14,7 +15,7 @@ class UserPanel : public QDialog
     Q_OBJECT
 
 public:
-    explicit UserPanel(QWidget *parent = 0);
+    explicit UserPanel(PlayerConfigurationsHandler* playerConfigurationsHandler, QWidget *parent = 0);
     ~UserPanel();
 
 private slots:
@@ -46,6 +47,8 @@ public:
 private:
     bool states[5];
     std::string testsOutputToFileString;
+    PlayerConfigurationsHandler* configurationsHandler;
+    int iActualPlayedMovie = 0;
 };
 
 #endif // USERPANEL_H

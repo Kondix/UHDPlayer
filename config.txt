@@ -1,0 +1,15 @@
+<config=2
+
+<video tractor
+<path /home/barti/CLionProjects/UHDPlayer/sampleVideos/tractor.raw
+<width 1920
+<height 1080
+<fps 33333
+<depth 12
+
+<video rower
+<path /home/barti/CLionProjects/UHDPlayer/sampleVideos/tractor.raw
+<width 1920
+<height 1080
+<fps 33333
+<depth 12

@@ -2,6 +2,7 @@
 #define ADMINPANEL_H
 
 #include <QDialog>
+#include "PlayerConfigurationsHandler.h"
 
 
 namespace Ui {
@@ -13,7 +14,7 @@ class AdminPanel : public QDialog
     Q_OBJECT
 
 public:
-    explicit AdminPanel(QWidget *parent = 0);
+    explicit AdminPanel(PlayerConfigurationsHandler* playerConfigurationsHandler, QWidget *parent = 0);
     ~AdminPanel();
 
 private slots:
@@ -21,6 +22,7 @@ private slots:
 
 private:
     Ui::AdminPanel *ui;
+    PlayerConfigurationsHandler* pCH;
 };
 
 #endif // ADMINPANEL_H

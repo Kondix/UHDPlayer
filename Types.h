@@ -12,7 +12,8 @@ const int iFrameDepth = 12;
 const int iBitByte = 8;
 const int iMovieByteSize = iFrameW*iFrameH*iFrameDepth/iBitByte;
 const int iMaxFramesInQueue = 5;
-const int64_t iFPS = 40000;
+static int64_t iFPS = 40000;
+const std::string sConfigFileLocation = "/home/barti/CLionProjects/UHDPlayer/config.txt";
 const std::string sFileLocation = "/home/barti/CLionProjects/UHDPlayer/sampleVideos/tractor.raw";
 static std:: mutex g_mtx;
 

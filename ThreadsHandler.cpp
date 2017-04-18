@@ -58,12 +58,11 @@ void ThreadsHandler::StopPlayBack(libvlc_media_player_t* mp,  std::shared_ptr<Co
 {
     while (!DisplayHandler::m_bDone) {
 
-        sleep(1);
+        usleep(iFPS/1000);
 
     }
 
-//    libvlc_media_player_stop(mp);
+//   libvlc_media_player_stop(mp);
 //    delete controler;
-//    delete video;
-
+    delete video;
 }

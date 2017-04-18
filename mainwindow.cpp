@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     QMainWindow::showFullScreen();
+    playerConfigurationsHandler = new PlayerConfigurationsHandler();
 }
 
 MainWindow::~MainWindow()
@@ -16,20 +17,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    adminPanel = new AdminPanel(this);
+    adminPanel = new AdminPanel(playerConfigurationsHandler, this);
     adminPanel->activateWindow();
-    adminPanel->show();
     adminPanel->topLevelWidget();
     adminPanel->showFullScreen();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    userPanel = new UserPanel(this);
-    userPanel->activateWindow();
-    userPanel->show();
-    userPanel->topLevelWidget();
-    userPanel->showFullScreen();
+    if(playerConfigurationsHandler->CheckConfiguration())
+    {
+        userPanel = new UserPanel(playerConfigurationsHandler, this);
+        userPanel->activateWindow();
+        userPanel->show();
+        userPanel->topLevelWidget();
+        userPanel->showFullScreen();
+    }
    //userPanel->();
 
 }

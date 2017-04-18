@@ -9,9 +9,10 @@
 
 
 
-UserPanel::UserPanel(QWidget *parent) :
+UserPanel::UserPanel(PlayerConfigurationsHandler* playerConfigurationsHandler, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::UserPanel)
+    ui(new Ui::UserPanel),
+    configurationsHandler(playerConfigurationsHandler)
 {
     ui->setupUi(this);
 
@@ -70,7 +71,7 @@ void UserPanel::on_proccedButton_clicked()
     }
     testsOutputToFileString += addToFile + "\t";
     //procced with next video
-    // StartPlayback()
+     StartPlayback();
 }
 
 
@@ -80,14 +81,19 @@ void UserPanel::on_pushButton_released()
     testsOutputToFileString += (ui->textEdit->toPlainText()).toStdString() + "\t";;
     ui->startWidget->hide();
     ui->ratingWidget->show();
+
     StartPlayback();
 
 }
 void UserPanel::StartPlayback()
 {
-    RawDataHandler rdh(sFileLocation);
+
+    DisplayHandler::m_bDone = false;
+    RawDataHandler rdh(configurationsHandler->GetPath(iActualPlayedMovie));
     FramesHandler framesHandler;
     ThreadsHandler threadsHandler;
+    iFPS = configurationsHandler->GetFps(iActualPlayedMovie);
+
 
     if (bShouldPreloadCache)
         threadsHandler.PreloadCache(iMovieByteSize, &framesHandler, &rdh);
@@ -115,15 +121,15 @@ void UserPanel::StartPlayback()
     optionsHandler.AddOption(imemReleaseArg);
 
     char imemWidthArg[256];
-    sprintf(imemWidthArg, "--imem-width=%d", iFrameW);
+    sprintf(imemWidthArg, "--imem-width=%d", configurationsHandler->GetWidth(iActualPlayedMovie));
     optionsHandler.AddOption(imemWidthArg);
 
     char imemHeightArg[256];
-    sprintf(imemHeightArg, "--imem-height=%d", iFrameH);
+    sprintf(imemHeightArg, "--imem-height=%d", configurationsHandler->GetHeight(iActualPlayedMovie));
     optionsHandler.AddOption(imemHeightArg);
 
     char imemChannelsArg[256];
-    sprintf(imemChannelsArg, "--imem-channels=%d", iFrameDepth);
+    sprintf(imemChannelsArg, "--imem-channels=%d", configurationsHandler->GetFrameDepth(iActualPlayedMovie));
     optionsHandler.AddOption(imemChannelsArg);
 
     std::shared_ptr<Controler> controler(new Controler(optionsHandler.GetOptions()));
@@ -131,6 +137,7 @@ void UserPanel::StartPlayback()
     VideoPanel* video = new VideoPanel(controler);
     video->showFullScreen();
     controler->Run();
+    iActualPlayedMovie++;
     threadsHandler.StopPlayBackThread(controler->m_DisplayHandler->m_pMediaPlayer,controler,video);
 
 
