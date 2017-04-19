@@ -20,6 +20,8 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_LoadConfig_clicked();
+
 private:
     Ui::AdminPanel *ui;
     PlayerConfigurationsHandler* pCH;

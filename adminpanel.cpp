@@ -19,6 +19,11 @@ AdminPanel::~AdminPanel()
 
 void AdminPanel::on_pushButton_clicked()
 {
+    delete this;
+}
+
+void AdminPanel::on_LoadConfig_clicked()
+{
     QString file =
             QFileDialog::getOpenFileName(this, tr("Open file"),
                                          QDir::homePath(),

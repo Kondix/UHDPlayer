@@ -1,9 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(int w, int h, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    width(w),
+    height(h)
 {
     ui->setupUi(this);
     QMainWindow::showFullScreen();
@@ -18,16 +20,17 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_2_clicked()
 {
     adminPanel = new AdminPanel(playerConfigurationsHandler, this);
+    adminPanel->show();
     adminPanel->activateWindow();
     adminPanel->topLevelWidget();
-    adminPanel->showFullScreen();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
     if(playerConfigurationsHandler->CheckConfiguration())
     {
-        userPanel = new UserPanel(playerConfigurationsHandler, this);
+        userPanel = new UserPanel(width, height,playerConfigurationsHandler, this);
+        userPanel->setGeometry(0,0, width, height);
         userPanel->activateWindow();
         userPanel->show();
         userPanel->topLevelWidget();

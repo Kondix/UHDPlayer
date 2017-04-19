@@ -15,7 +15,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(int w, int h, QWidget *parent = 0);
     ~MainWindow();
 
 private slots:
@@ -28,6 +28,8 @@ private:
     AdminPanel* adminPanel;
     UserPanel* userPanel;
     PlayerConfigurationsHandler* playerConfigurationsHandler;
+    int width;
+    int height;
 };
 
 #endif // MAINWINDOW_H

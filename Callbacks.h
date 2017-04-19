@@ -14,7 +14,7 @@ namespace Callbacks
         g_mtx.lock();
         FramesHandler* framesHandler = (FramesHandler*)data;
 
-        *bufferSize = iFrameH*iFrameW*iFrameDepth/iBitByte;
+        *bufferSize = iMovieByteSize;
 
         if (framesHandler->GetFramesCount() > 0)
         {

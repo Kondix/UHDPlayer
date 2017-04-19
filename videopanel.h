@@ -20,7 +20,7 @@ class VideoPanel : public QDialog
     Q_OBJECT
 
 public:
-    explicit VideoPanel(std::shared_ptr<Controler> controler, QWidget *parent = 0);
+    explicit VideoPanel(int w, int h, std::shared_ptr<Controler> controler, QWidget *parent = 0);
     ~VideoPanel();
 
 private slots:

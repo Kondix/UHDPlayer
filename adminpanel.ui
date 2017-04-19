@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1080</height>
+    <width>415</width>
+    <height>225</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -22,19 +22,52 @@
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>1740</x>
-     <y>11</y>
-     <width>171</width>
-     <height>61</height>
-    </rect>
+  <layout class="QFormLayout" name="formLayout">
+   <property name="horizontalSpacing">
+    <number>0</number>
    </property>
-   <property name="text">
-    <string>Anuluj</string>
+   <property name="verticalSpacing">
+    <number>0</number>
    </property>
-  </widget>
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>15</number>
+   </property>
+   <item row="7" column="1">
+    <widget class="QPushButton" name="LoadConfig">
+     <property name="minimumSize">
+      <size>
+       <width>245</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Załaduj Konfiguracje</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QPushButton" name="pushButton">
+     <property name="minimumSize">
+      <size>
+       <width>245</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>           Anuluj          </string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

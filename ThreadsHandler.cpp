@@ -2,6 +2,7 @@
 #include "videopanel.h"
 
 
+
 void ThreadsHandler::AddThread(std::thread* thread)
 {
 m_ThreadsVector.push_back(thread);
@@ -48,21 +49,24 @@ void ThreadsHandler::LoadFrameAndAddToQueue(int iFrameSize, FramesHandler* frame
 };
 
 
-void ThreadsHandler::StopPlayBackThread(libvlc_media_player_t* mp,  std::shared_ptr<Controler> controler, VideoPanel* video)
+void ThreadsHandler::StopPlayBackThread(VideoPanel* video, UserPanel* userPanel)
 {
-    std::thread thread = std::thread(&ThreadsHandler::StopPlayBack, this, mp, controler, video);
+    std::thread thread = std::thread(&ThreadsHandler::StopPlayBack, this, video, userPanel);
     thread.join();
 }
 
-void ThreadsHandler::StopPlayBack(libvlc_media_player_t* mp,  std::shared_ptr<Controler> controler, VideoPanel* video)
+void ThreadsHandler::StopPlayBack(VideoPanel* video, UserPanel* userPanel)
 {
     while (!DisplayHandler::m_bDone) {
 
-        usleep(iFPS/1000);
+        usleep(iFPS/2000);
 
     }
 
 //   libvlc_media_player_stop(mp);
 //    delete controler;
+
     delete video;
+
+
 }

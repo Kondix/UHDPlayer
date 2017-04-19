@@ -15,7 +15,7 @@ class UserPanel : public QDialog
     Q_OBJECT
 
 public:
-    explicit UserPanel(PlayerConfigurationsHandler* playerConfigurationsHandler, QWidget *parent = 0);
+    explicit UserPanel(int w, int h, PlayerConfigurationsHandler* playerConfigurationsHandler, QWidget *parent = 0);
     ~UserPanel();
 
 private slots:
@@ -37,18 +37,27 @@ private slots:
 
     void on_pushButton_released();
 
-    void StartPlayback();
-
     void WriteToFile();
 
+public:
+
+    PlayerConfigurationsHandler* GetConfigHandler()
+    {
+        return configurationsHandler;
+    }
+
+    void StartPlayback();
 
 public:
     Ui::UserPanel *ui;
-private:
+public:
     bool states[5];
     std::string testsOutputToFileString;
     PlayerConfigurationsHandler* configurationsHandler;
     int iActualPlayedMovie = 0;
+    int height;
+    int width;
+
 };
 
 #endif // USERPANEL_H

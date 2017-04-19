@@ -115,7 +115,10 @@ public:
     {
         return moviesProperties[index]->m_iFps;
     }
-
+    int GetMoviesCount()
+    {
+        return moviesProperties.size();
+    }
     bool CheckConfiguration()
     {
         return  bIsConfigurationSetUp;

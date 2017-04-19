@@ -9,10 +9,12 @@
 
 
 
-UserPanel::UserPanel(PlayerConfigurationsHandler* playerConfigurationsHandler, QWidget *parent) :
+UserPanel::UserPanel(int w, int h, PlayerConfigurationsHandler* playerConfigurationsHandler, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::UserPanel),
-    configurationsHandler(playerConfigurationsHandler)
+    configurationsHandler(playerConfigurationsHandler),
+    height(h),
+    width(w)
 {
     ui->setupUi(this);
 
@@ -62,16 +64,43 @@ void UserPanel::on_one_toggled(bool checked)
 void UserPanel::on_proccedButton_clicked()
 {
     std::string addToFile = "";
-    for(int i = 0; i<5; i++)
+    bool checked = false;
+    for(int i = 0; i < 5; i++)
     {
         if(states[i])
         {
-            addToFile += std::to_string(states[i]);
+            addToFile += std::to_string(5-i);
+            checked = true;
         }
     }
+    if(!checked)
+        return;
     testsOutputToFileString += addToFile + "\t";
     //procced with next video
-     StartPlayback();
+    if(iActualPlayedMovie == configurationsHandler->GetMoviesCount())
+    {
+        WriteToFile();
+        delete this;
+    }
+    else
+    {
+        ui->one->setAutoExclusive(false);
+        ui->two->setAutoExclusive(false);
+        ui->three->setAutoExclusive(false);
+        ui->four->setAutoExclusive(false);
+        ui->five->setAutoExclusive(false);
+        ui->one->setChecked(false);
+        ui->two->setChecked(false);
+        ui->three->setChecked(false);
+        ui->four->setChecked(false);
+        ui->five->setChecked(false);
+        ui->one->setAutoExclusive(true);
+        ui->two->setAutoExclusive(true);
+        ui->three->setAutoExclusive(true);
+        ui->four->setAutoExclusive(true);
+        ui->five->setAutoExclusive(true);
+        StartPlayback();
+    }
 }
 
 
@@ -94,11 +123,12 @@ void UserPanel::StartPlayback()
     ThreadsHandler threadsHandler;
     iFPS = configurationsHandler->GetFps(iActualPlayedMovie);
 
-
+    int movieByteSize = configurationsHandler->GetWidth(iActualPlayedMovie)*configurationsHandler->GetHeight(iActualPlayedMovie)*configurationsHandler->GetFrameDepth(iActualPlayedMovie)/iBitByte;
+    iMovieByteSize = movieByteSize;
     if (bShouldPreloadCache)
-        threadsHandler.PreloadCache(iMovieByteSize, &framesHandler, &rdh);
+        threadsHandler.PreloadCache(movieByteSize, &framesHandler, &rdh);
     else
-        threadsHandler.CreateNFramesGetterThreads(2, &rdh, &framesHandler, iMovieByteSize);
+        threadsHandler.CreateNFramesGetterThreads(2, &rdh, &framesHandler, movieByteSize);
 
     ImemOptionsHandler optionsHandler;
     optionsHandler.AddOption("--no-video-title-show");
@@ -134,11 +164,17 @@ void UserPanel::StartPlayback()
 
     std::shared_ptr<Controler> controler(new Controler(optionsHandler.GetOptions()));
 
-    VideoPanel* video = new VideoPanel(controler);
+    VideoPanel* video = new VideoPanel(width, height, controler);
+    video->setGeometry(0, 0, width, height);
     video->showFullScreen();
+
     controler->Run();
     iActualPlayedMovie++;
-    threadsHandler.StopPlayBackThread(controler->m_DisplayHandler->m_pMediaPlayer,controler,video);
+    if(iActualPlayedMovie == configurationsHandler->GetMoviesCount())
+    {
+       ui->proccedButton->setText("Zakończ Test");
+    }
+    threadsHandler.StopPlayBackThread(video, this);
 
 
    // delete video;
@@ -147,8 +183,8 @@ void UserPanel::StartPlayback()
 }
 void UserPanel::WriteToFile()
 {
-    std::ofstream file;
-    file.open("wyniki.txt");
+    std::fstream file;
+    file.open("wyniki.txt", std::fstream::app);
     file << testsOutputToFileString + "\n";
     file.close();
 }
