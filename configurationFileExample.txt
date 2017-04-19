@@ -1,0 +1,22 @@
+<config=2
+
+<video chiny
+<path /home/barti/CLionProjects/UHDPlayer/sampleVideos/chimei.raw
+<width 3840
+<height 2160
+<fps 40000
+<depth 12
+
+<video tractor
+<path /home/barti/CLionProjects/UHDPlayer/sampleVideos/tractor.raw
+<width 1920
+<height 1080
+<fps 33333
+<depth 12
+
+<video pieski
+<path /home/barti/CLionProjects/UHDPlayer/sampleVideos/puppies.raw
+<width 4096
+<height 2304
+<fps 40000
+<depth 12

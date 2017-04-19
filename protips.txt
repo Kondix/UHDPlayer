@@ -47,3 +47,14 @@ How to force set higher resolution using xrandr:
 4. Change scale back using: 'xrandr --output OUTPUT --scale 1x1'
 5. Set previous resolution using: 'xrandr --fb RESOLUTION'
 
+
+
+##############
+Config sample:
+##############
+<video      [title - sting]
+<path       [path to file without "" - string]
+<width      [video size number - int]
+<height     [same as ^ - int]
+<fps        [100000 divided by video fps actually its time to next frame in microseconds (temporary) - int]
+<depth      [colors coding frame depth - int]
