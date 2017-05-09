@@ -76,6 +76,10 @@ public:
             {
                 moviesProperties[iVideo]->m_iFrameDepth = std::stoi(parameterValue);
             }
+            if(parameterName.find("codec") != std::string::npos)
+            {
+                moviesProperties[iVideo]->m_sCodec = parameterValue;
+            }
         }
         bIsConfigurationSetUp = true;
     }
@@ -98,7 +102,10 @@ public:
     {
         return moviesProperties[index]->m_sName;
     }
-
+    std::string GetCodec(int index)
+    {
+        return moviesProperties[index]->m_sCodec;
+    }
     int GetWidth(int index)
     {
         return moviesProperties[index]->m_iWidth;
@@ -122,6 +129,14 @@ public:
     bool CheckConfiguration()
     {
         return  bIsConfigurationSetUp;
+    }
+    int GetRate(int index)
+    {
+        return moviesProperties[index]->rate;
+    }
+    void SetRate(int index, int t_rate)
+    {
+        moviesProperties[index]->rate = t_rate;
     }
 };
 

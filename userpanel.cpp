@@ -18,9 +18,25 @@ UserPanel::UserPanel(int w, int h, PlayerConfigurationsHandler* playerConfigurat
 {
     ui->setupUi(this);
 
+    if(configurationsHandler->GetConfig() == 3) {
+        mTimer = new QTimer(this);
+        mTimer->setSingleShot(true);
+
+        connect(mTimer, SIGNAL(timeout()), SLOT(StartPlayback()));
+    }
+
     QDialog::showFullScreen();
     ui->startWidget->show();
     ui->ratingWidget->hide();
+    ui->ratingWidget_2->hide();
+    ui->chooseMovieWidget->hide();
+
+    if(configurationsHandler->GetConfig() == 2)
+    {
+        for (int iMovie = 0; iMovie < configurationsHandler->GetMoviesCount(); ++iMovie) {
+            ui->comboBox->addItem(QString::fromStdString(configurationsHandler->GetName(iMovie)) + QString::fromStdString("   ") + QString::fromStdString(std::to_string(configurationsHandler->GetRate(iMovie))));
+        }
+    }
 }
 
 UserPanel::~UserPanel()
@@ -32,10 +48,6 @@ void UserPanel::on_textEdit_textChanged()
 {
 }
 
-void UserPanel::on_pushButton_clicked()
-{
-
-}
 void UserPanel::on_five_toggled(bool checked)
 {
     states[4] = checked;
@@ -63,21 +75,35 @@ void UserPanel::on_one_toggled(bool checked)
 
 void UserPanel::on_proccedButton_clicked()
 {
-    std::string addToFile = "";
+    int chosenRate = 0;
     bool checked = false;
     for(int i = 0; i < 5; i++)
     {
-        if(states[i])
+        if(states[i] == true)
         {
-            addToFile += std::to_string(5-i);
+            chosenRate = 5-i;
+            configurationsHandler->SetRate(iActualPlayedMovie, chosenRate);
             checked = true;
         }
     }
     if(!checked)
         return;
-    testsOutputToFileString += addToFile + "\t";
+
+    //configurationsHandler->SetRate(iActualPlayedMovie, chosenRate);
+    if(configurationsHandler->GetConfig() == 2)
+    {
+        ui->comboBox->clear();
+        for (int iMovie = 0; iMovie < configurationsHandler->GetMoviesCount(); ++iMovie) {
+            ui->comboBox->addItem(QString::fromStdString(configurationsHandler->GetName(iMovie)) + QString::fromStdString("   ") + QString::fromStdString(std::to_string(configurationsHandler->GetRate(iMovie))));
+        }
+    }
+    else
+    {
+        std::string addToFile = std::to_string(configurationsHandler->GetRate(iActualPlayedMovie));
+        testsOutputToFileString += addToFile + "\t";
+    }
     //procced with next video
-    if(iActualPlayedMovie == configurationsHandler->GetMoviesCount())
+    if(configurationsHandler->GetConfig() != 2 && (iActualPlayedMovie+1) == configurationsHandler->GetMoviesCount())
     {
         WriteToFile();
         delete this;
@@ -99,20 +125,39 @@ void UserPanel::on_proccedButton_clicked()
         ui->three->setAutoExclusive(true);
         ui->four->setAutoExclusive(true);
         ui->five->setAutoExclusive(true);
-        StartPlayback();
+        if(configurationsHandler->GetConfig() == 1)
+        {
+            iActualPlayedMovie++;
+            StartPlayback();
+        }
+        else if(configurationsHandler->GetConfig() == 2)
+        {
+            ui->ratingWidget->hide();
+            ui->chooseMovieWidget->show();
+        }
     }
 }
 
 
-void UserPanel::on_pushButton_released()
+void UserPanel::on_pushButton_clicked()
 {
 
     testsOutputToFileString += (ui->textEdit->toPlainText()).toStdString() + "\t";;
     ui->startWidget->hide();
-    ui->ratingWidget->show();
 
-    StartPlayback();
-
+    if(configurationsHandler->GetConfig() == 1) {
+        ui->ratingWidget->show();
+        StartPlayback();
+    }
+    else if(configurationsHandler->GetConfig() == 2)
+    {
+        ui->chooseMovieWidget->show();
+    }
+    else if(configurationsHandler->GetConfig() == 3)
+    {
+       // ui->ratingWidget_2->show();
+        StartPlayback();
+    }
 }
 void UserPanel::StartPlayback()
 {
@@ -132,7 +177,8 @@ void UserPanel::StartPlayback()
 
     ImemOptionsHandler optionsHandler;
     optionsHandler.AddOption("--no-video-title-show");
-    optionsHandler.AddOption("--imem-codec=I420");
+    //std::string codec = "--imem-codec=" + configurationsHandler->GetCodec(iActualPlayedMovie);
+    optionsHandler.AddOption("--imem-codec=I420" );
     optionsHandler.AddOption("--imem-cookie=test");
     optionsHandler.AddOption("--imem-cat=2");
     optionsHandler.AddOption("--imem-fps=2");
@@ -169,18 +215,36 @@ void UserPanel::StartPlayback()
     video->showFullScreen();
 
     controler->Run();
-    iActualPlayedMovie++;
-    if(iActualPlayedMovie == configurationsHandler->GetMoviesCount())
+    if(configurationsHandler->GetConfig() == 1)
     {
-       ui->proccedButton->setText("Zakończ Test");
+        if ((iActualPlayedMovie+1) == configurationsHandler->GetMoviesCount()) {
+            ui->proccedButton->setText("Zakończ Test");
+        }
     }
-    threadsHandler.StopPlayBackThread(video, this);
+    if(configurationsHandler->GetConfig() == 3)
+    {
+        if(iActualPlayedMovie %2 == 1)
+        {
+            ui->ratingWidget_2->show();
+            iActualPlayedMovie++;
+        }
+        else
+        {
+            iActualPlayedMovie++;
+            ui->ratingWidget_2->hide();
+            mTimer->start(1000);
+        }
+      //  mTimer->setSingleShot(true);
 
+    }
+
+    threadsHandler.StopPlayBackThread(video, this);
 
    // delete video;
    // libvlc_media_player_stop(controler->m_DisplayHandler->m_pMediaPlayer);
 
 }
+
 void UserPanel::WriteToFile()
 {
     std::fstream file;
@@ -190,3 +254,132 @@ void UserPanel::WriteToFile()
 }
 
 
+
+void UserPanel::on_proccedButton_2_clicked()
+{
+    ui->ratingWidget->show();
+    ui->chooseMovieWidget->hide();
+    StartPlayback();
+}
+
+void UserPanel::on_proccedButton_3_clicked()
+{
+    for (int iMovie = 0; iMovie < configurationsHandler->GetMoviesCount(); ++iMovie)
+    {
+        testsOutputToFileString += std::to_string(configurationsHandler->GetRate(iMovie)) + "\t";
+    }
+    WriteToFile();
+    delete this;
+}
+
+void UserPanel::on_comboBox_activated(const QString &arg1)
+{
+
+}
+
+void UserPanel::on_comboBox_activated(int index)
+{
+    iActualPlayedMovie = index;
+}
+
+void UserPanel::on_comboBox_currentIndexChanged(int index)
+{
+
+}
+
+void UserPanel::on_comboBox_highlighted(int index)
+{
+
+}
+
+void UserPanel::on_one_2_toggled(bool checked)
+{
+    states2[0] = checked;
+}
+
+void UserPanel::on_two_2_toggled(bool checked)
+{
+    states2[1] = checked;
+}
+
+void UserPanel::on_three_2_toggled(bool checked)
+{
+    states2[2] = checked;
+}
+
+void UserPanel::on_four_2_toggled(bool checked)
+{
+    states2[3] = checked;
+}
+
+void UserPanel::on_five_2_toggled(bool checked)
+{
+    states2[4] = checked;
+}
+
+void UserPanel::on_six_2_toggled(bool checked)
+{
+    states2[5] = checked;
+}
+
+void UserPanel::on_seven_2_toggled(bool checked)
+{
+    states2[6] = checked;
+}
+
+
+void UserPanel::on_proccedButton_4_clicked()
+{
+    std::string addToFile = "";
+    int chosenRate = 0;
+    bool checked = false;
+    for(int i = 0; i < 7; i++)
+    {
+        if(states2[i])
+        {
+            // += std::to_string(7-i);
+            chosenRate = 7-i;
+            checked = true;
+        }
+    }
+    if(!checked)
+        return;
+    addToFile = std::to_string(chosenRate - 4);
+    testsOutputToFileString += addToFile + "\t";
+
+    //procced with next video
+    if(iActualPlayedMovie == configurationsHandler->GetMoviesCount())
+    {
+        WriteToFile();
+        delete this;
+    }
+    else
+    {
+        ui->one_2->setAutoExclusive(false);
+        ui->two_2->setAutoExclusive(false);
+        ui->three_2->setAutoExclusive(false);
+        ui->four_2->setAutoExclusive(false);
+        ui->five_2->setAutoExclusive(false);
+        ui->six_2->setAutoExclusive(false);
+        ui->seven_2->setAutoExclusive(false);
+
+        ui->one_2->setChecked(false);
+        ui->two_2->setChecked(false);
+        ui->three_2->setChecked(false);
+        ui->four_2->setChecked(false);
+        ui->five_2->setChecked(false);
+        ui->six_2->setChecked(false);
+        ui->seven_2->setChecked(false);
+
+        ui->one_2->setAutoExclusive(true);
+        ui->two_2->setAutoExclusive(true);
+        ui->three_2->setAutoExclusive(true);
+        ui->four_2->setAutoExclusive(true);
+        ui->five_2->setAutoExclusive(true);
+        ui->six_2->setAutoExclusive(true);
+        ui->seven_2->setAutoExclusive(true);
+
+       StartPlayback();
+
+    }
+}

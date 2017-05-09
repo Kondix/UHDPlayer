@@ -35,9 +35,37 @@ private slots:
 
     void on_proccedButton_clicked();
 
-    void on_pushButton_released();
-
     void WriteToFile();
+
+    void on_proccedButton_2_clicked();
+
+    void on_proccedButton_3_clicked();
+
+    void on_comboBox_activated(const QString &arg1);
+
+    void on_comboBox_activated(int index);
+
+    void on_comboBox_currentIndexChanged(int index);
+
+    void on_comboBox_highlighted(int index);
+
+    void on_five_2_toggled(bool checked);
+
+    void on_four_2_toggled(bool checked);
+
+    void on_two_2_toggled(bool checked);
+
+    void on_three_2_toggled(bool checked);
+
+    void on_six_2_toggled(bool checked);
+
+    void on_seven_2_toggled(bool checked);
+
+    void on_one_2_toggled(bool checked);
+
+    void on_proccedButton_4_clicked();
+
+    void StartPlayback();
 
 public:
 
@@ -46,12 +74,14 @@ public:
         return configurationsHandler;
     }
 
-    void StartPlayback();
+
 
 public:
     Ui::UserPanel *ui;
 public:
+    QTimer* mTimer;
     bool states[5];
+    bool states2[7];
     std::string testsOutputToFileString;
     PlayerConfigurationsHandler* configurationsHandler;
     int iActualPlayedMovie = 0;
