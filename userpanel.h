@@ -19,6 +19,11 @@ public:
     ~UserPanel();
 
 private slots:
+    void nothing()
+    {
+        return;
+    };
+
     void on_textEdit_textChanged();
 
     void on_pushButton_clicked();
@@ -88,6 +93,7 @@ public:
     int height;
     int width;
 
+    void UncheckToggles() const;
 };
 
 #endif // USERPANEL_H

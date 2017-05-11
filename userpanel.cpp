@@ -16,14 +16,27 @@ UserPanel::UserPanel(int w, int h, PlayerConfigurationsHandler* playerConfigurat
     height(h),
     width(w)
 {
+
+    for (int istate = 0; istate < 5; ++istate) {
+        states[istate] = false;
+    }
+    for (int istate = 0; istate < 7; ++istate) {
+        states2[istate] = false;
+    }
     ui->setupUi(this);
 
     if(configurationsHandler->GetConfig() == 3) {
         mTimer = new QTimer(this);
         mTimer->setSingleShot(true);
-
         connect(mTimer, SIGNAL(timeout()), SLOT(StartPlayback()));
     }
+    else
+    {
+        mTimer = new QTimer(this);
+        mTimer->setSingleShot(true);
+        connect(mTimer, SIGNAL(timeout()), SLOT(nothing()));
+    }
+    UncheckToggles();
 
     QDialog::showFullScreen();
     ui->startWidget->show();
@@ -77,11 +90,13 @@ void UserPanel::on_proccedButton_clicked()
 {
     int chosenRate = 0;
     bool checked = false;
+    std::string addToFile = "";
     for(int i = 0; i < 5; i++)
     {
         if(states[i] == true)
         {
-            chosenRate = 5-i;
+            addToFile = std::to_string(5-i);
+            chosenRate = (5 - i);
             configurationsHandler->SetRate(iActualPlayedMovie, chosenRate);
             checked = true;
         }
@@ -99,7 +114,7 @@ void UserPanel::on_proccedButton_clicked()
     }
     else
     {
-        std::string addToFile = std::to_string(configurationsHandler->GetRate(iActualPlayedMovie));
+       // = std::to_string(chosenRate);// std::to_string(configurationsHandler->GetRate(iActualPlayedMovie));
         testsOutputToFileString += addToFile + "\t";
     }
     //procced with next video
@@ -110,21 +125,8 @@ void UserPanel::on_proccedButton_clicked()
     }
     else
     {
-        ui->one->setAutoExclusive(false);
-        ui->two->setAutoExclusive(false);
-        ui->three->setAutoExclusive(false);
-        ui->four->setAutoExclusive(false);
-        ui->five->setAutoExclusive(false);
-        ui->one->setChecked(false);
-        ui->two->setChecked(false);
-        ui->three->setChecked(false);
-        ui->four->setChecked(false);
-        ui->five->setChecked(false);
-        ui->one->setAutoExclusive(true);
-        ui->two->setAutoExclusive(true);
-        ui->three->setAutoExclusive(true);
-        ui->four->setAutoExclusive(true);
-        ui->five->setAutoExclusive(true);
+        UncheckToggles();
+
         if(configurationsHandler->GetConfig() == 1)
         {
             iActualPlayedMovie++;
@@ -182,7 +184,7 @@ void UserPanel::StartPlayback()
     optionsHandler.AddOption("--imem-cookie=test");
     optionsHandler.AddOption("--imem-cat=2");
     optionsHandler.AddOption("--imem-fps=2");
-    optionsHandler.AddOption("--verbose=2");
+   // optionsHandler.AddOption("--verbose=2");
 
     char imemDataArg[256];
     sprintf(imemDataArg, "--imem-data=%p", &framesHandler);
@@ -280,6 +282,7 @@ void UserPanel::on_comboBox_activated(const QString &arg1)
 void UserPanel::on_comboBox_activated(int index)
 {
     iActualPlayedMovie = index;
+    std::cout<<std::to_string(iActualPlayedMovie);
 }
 
 void UserPanel::on_comboBox_currentIndexChanged(int index)
@@ -344,7 +347,7 @@ void UserPanel::on_proccedButton_4_clicked()
     }
     if(!checked)
         return;
-    addToFile = std::to_string(chosenRate - 4);
+    addToFile = std::to_string((chosenRate - 4));
     testsOutputToFileString += addToFile + "\t";
 
     //procced with next video
@@ -355,31 +358,54 @@ void UserPanel::on_proccedButton_4_clicked()
     }
     else
     {
-        ui->one_2->setAutoExclusive(false);
-        ui->two_2->setAutoExclusive(false);
-        ui->three_2->setAutoExclusive(false);
-        ui->four_2->setAutoExclusive(false);
-        ui->five_2->setAutoExclusive(false);
-        ui->six_2->setAutoExclusive(false);
-        ui->seven_2->setAutoExclusive(false);
+        UncheckToggles();
 
-        ui->one_2->setChecked(false);
-        ui->two_2->setChecked(false);
-        ui->three_2->setChecked(false);
-        ui->four_2->setChecked(false);
-        ui->five_2->setChecked(false);
-        ui->six_2->setChecked(false);
-        ui->seven_2->setChecked(false);
-
-        ui->one_2->setAutoExclusive(true);
-        ui->two_2->setAutoExclusive(true);
-        ui->three_2->setAutoExclusive(true);
-        ui->four_2->setAutoExclusive(true);
-        ui->five_2->setAutoExclusive(true);
-        ui->six_2->setAutoExclusive(true);
-        ui->seven_2->setAutoExclusive(true);
-
-       StartPlayback();
+        StartPlayback();
 
     }
+}
+
+void UserPanel::UncheckToggles() const {
+
+    ui->one->setAutoExclusive(false);
+    ui->two->setAutoExclusive(false);
+    ui->three->setAutoExclusive(false);
+    ui->four->setAutoExclusive(false);
+    ui->five->setAutoExclusive(false);
+
+    ui->one->setChecked(false);
+    ui->two->setChecked(false);
+    ui->three->setChecked(false);
+    ui->four->setChecked(false);
+    ui->five->setChecked(false);
+
+    ui->one->setAutoExclusive(true);
+    ui->two->setAutoExclusive(true);
+    ui->three->setAutoExclusive(true);
+    ui->four->setAutoExclusive(true);
+    ui->five->setAutoExclusive(true);
+
+    ui->one_2->setAutoExclusive(false);
+    ui->two_2->setAutoExclusive(false);
+    ui->three_2->setAutoExclusive(false);
+    ui->four_2->setAutoExclusive(false);
+    ui->five_2->setAutoExclusive(false);
+    ui->six_2->setAutoExclusive(false);
+    ui->seven_2->setAutoExclusive(false);
+
+    ui->one_2->setChecked(false);
+    ui->two_2->setChecked(false);
+    ui->three_2->setChecked(false);
+    ui->four_2->setChecked(false);
+    ui->five_2->setChecked(false);
+    ui->six_2->setChecked(false);
+    ui->seven_2->setChecked(false);
+
+    ui->one_2->setAutoExclusive(true);
+    ui->two_2->setAutoExclusive(true);
+    ui->three_2->setAutoExclusive(true);
+    ui->four_2->setAutoExclusive(true);
+    ui->five_2->setAutoExclusive(true);
+    ui->six_2->setAutoExclusive(true);
+    ui->seven_2->setAutoExclusive(true);
 }
